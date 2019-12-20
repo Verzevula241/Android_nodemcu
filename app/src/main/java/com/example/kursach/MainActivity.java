@@ -1,7 +1,9 @@
 package com.example.kursach;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -17,10 +19,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity implements OnDataSendToActivity,ExampleDialog.ExampleDialogListener {
+public class MainActivity extends AppCompatActivity implements OnDataSendToActivity,ExampleDialog.ExampleDialogListener, FragmentA.FragmentAListener {
 
 
 
@@ -28,10 +32,12 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
     Button btn_rl, btn_mr, btn_bed, btn_fan;
     TextView txt_network;
     TextView head_txt;
-    String ip = "";
+    String ip = "192.168.0.33";
     //String url = "http://"+ip+"/"; //Define your NodeMCU IP Address here Ex: http://192.168.1.4/
-    String url = String.format("http://%s/",ip);
+    String url ;
     Toast toast ;
+    static String temp;
+    private FragmentA fragmentA;
 
     public void showAToast (String message){
         if (toast != null) {
@@ -52,8 +58,12 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
         head_txt = findViewById(R.id.head_txt);
 
 
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
 
         final Handler handler = new Handler();
@@ -62,13 +72,13 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
             public void run() {
                 if(isNetworkAvailable()){
                     bg_state.setImageResource(R.drawable.background_on);
+                    url = String.format("http://%s/",ip);
 
                 }else{
                     bg_state.setImageResource(R.drawable.background);
                     //txt_network.setText(getString(R.string.server_offline));
                     showAToast(getString(R.string.server_offline));
                 }
-
                 updateTemp();
                 updateStatus();
                 handler.postDelayed(this, 2000);
@@ -118,7 +128,33 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
                 updateStatus();
             }
         });
+
     }
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment selectedFragment = null;
+
+                    switch (item.getItemId()) {
+                        case R.id.nav_home:
+                            selectedFragment = new Frag1();
+                            break;
+                        case R.id.nav_favorites:
+                            selectedFragment = new FragmentA();
+                            break;
+                        case R.id.nav_search:
+                            selectedFragment = new Frag3();
+                            break;
+                    }
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+
+                    return true;
+                }
+            };
 
 
     public void openDialog() {
@@ -141,22 +177,11 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item2:
-                openDialog();
-                return true;
-            case R.id.item3:
-                Toast.makeText(this, "Item 3 selected", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.subitem1:
-                Toast.makeText(this, "Sub Item 1 selected", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.subitem2:
-                Toast.makeText(this, "Sub Item 2 selected", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.item2) {
+            openDialog();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private boolean isNetworkAvailable() {
@@ -186,10 +211,10 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
 
 
     private void updateTempStatus(String jsonStrings){
+
         try {
             JSONObject json = new JSONObject(jsonStrings);
-
-            String temp = json.getString("temp");
+            temp = json.getString("temp");
             String humi = json.getString("hum");
             String far = json.getString("far");
 
@@ -206,6 +231,11 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
     //Function for updating Button Status
 
 
+    @Override
+    public void onInputASent(CharSequence input) {
+        fragmentA.updateEditText(input);
+    }
+
     private void updateButtonStatus(String jsonStrings){
         try {
             JSONObject json = new JSONObject(jsonStrings);
@@ -217,22 +247,22 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
 
 
             if(room_light.equals("1")){
-                btn_rl.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
+                btn_rl.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
             }else{
                 btn_rl.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
             }
             if(mirror_light.equals("1")){
-                btn_mr.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
+                btn_mr.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
             }else{
                 btn_mr.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
             }
             if(bed_light.equals("1")){
-                btn_bed.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
+                btn_bed.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
             }else{
                 btn_bed.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
             }
             if(fan.equals("1")){
-                btn_fan.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
+                btn_fan.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
             }else{
                 btn_fan.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
             }
