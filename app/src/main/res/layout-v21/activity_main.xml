@@ -25,67 +25,67 @@
         android:layout_width="match_parent"
         android:layout_height="45dp" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+<!--    <LinearLayout-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:layout_centerHorizontal="true">-->
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true">
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerHorizontal="true">-->
 
-            <Button
-                android:id="@+id/room"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableBottom="@drawable/power_off"
-                android:background="@drawable/button_rec"
-                android:text="Room Light"
-                android:textSize="16sp"
-                android:layout_margin="5dp"
-                android:padding="10dp" />
-            <Button
-                android:id="@+id/mirror"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableBottom="@drawable/power_off"
-                android:background="@drawable/button_rec"
-                android:text="Mirror Light"
-                android:textSize="16sp"
-                android:layout_margin="5dp"
-                android:padding="10dp" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true">
-            <Button
-                android:id="@+id/bed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableBottom="@drawable/power_off"
-                android:background="@drawable/button_rec"
-                android:text="Bed Light"
-                android:textSize="16sp"
-                android:layout_margin="5dp"
-                android:padding="10dp" />
-            <Button
-                android:id="@+id/fan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableBottom="@drawable/power_off"
-                android:background="@drawable/button_rec"
-                android:text="Table Fan"
-                android:textSize="16sp"
-                android:layout_margin="5dp"
-                android:padding="10dp" />
-        </LinearLayout>
+<!--            <Button-->
+<!--                android:id="@+id/room"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:drawableBottom="@drawable/power_off"-->
+<!--                android:background="@drawable/button_rec"-->
+<!--                android:text="Room Light"-->
+<!--                android:textSize="16sp"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:padding="10dp" />-->
+<!--            <Button-->
+<!--                android:id="@+id/mirror"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:drawableBottom="@drawable/power_off"-->
+<!--                android:background="@drawable/button_rec"-->
+<!--                android:text="Mirror Light"-->
+<!--                android:textSize="16sp"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:padding="10dp" />-->
+<!--        </LinearLayout>-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerHorizontal="true">-->
+<!--            <Button-->
+<!--                android:id="@+id/bed"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:drawableBottom="@drawable/power_off"-->
+<!--                android:background="@drawable/button_rec"-->
+<!--                android:text="Bed Light"-->
+<!--                android:textSize="16sp"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:padding="10dp" />-->
+<!--            <Button-->
+<!--                android:id="@+id/fan"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:drawableBottom="@drawable/power_off"-->
+<!--                android:background="@drawable/button_rec"-->
+<!--                android:text="Table Fan"-->
+<!--                android:textSize="16sp"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:padding="10dp" />-->
+<!--        </LinearLayout>-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
     <FrameLayout
         android:id="@+id/fragment_container"

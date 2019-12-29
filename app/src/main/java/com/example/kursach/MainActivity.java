@@ -30,14 +30,22 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
 
     ImageView bg_state;
     Button btn_rl, btn_mr, btn_bed, btn_fan;
+    static public String room_light = "0";
+    public String mirror_light;
+    public String bed_light;
+    public String fan;
     TextView txt_network;
     TextView head_txt;
-    String ip = "192.168.0.33";
+    static String ip = "192.168.43.232";
+    static String mess = "";
     //String url = "http://"+ip+"/"; //Define your NodeMCU IP Address here Ex: http://192.168.1.4/
-    String url ;
+    static String url ;
     Toast toast ;
     static String temp;
+    static String hum;
+
     private FragmentA fragmentA;
+    private Frag1 frag1;
 
     public void showAToast (String message){
         if (toast != null) {
@@ -81,53 +89,53 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
                 }
                 updateTemp();
                 updateStatus();
-                handler.postDelayed(this, 2000);
+                handler.postDelayed(this, 5000);
             }
         }, 5000);  //the time is in miliseconds
 
 
-        btn_rl = findViewById(R.id.room);
-        btn_mr = findViewById(R.id.mirror);
-        btn_bed = findViewById(R.id.bed);
-        btn_fan = findViewById(R.id.fan);
-
-        btn_rl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String url_rl = url+"room_light";
-                SelectTask task = new SelectTask(url_rl);
-                task.execute();
-                updateStatus();
-            }
-        });
-
-        btn_mr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String url_rl = url+"mirror_light";
-                SelectTask task = new SelectTask(url_rl);
-                task.execute();
-                updateStatus();
-            }
-        });
-        btn_bed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String url_rl = url+"bed_light";
-                SelectTask task = new SelectTask(url_rl);
-                task.execute();
-                updateStatus();
-            }
-        });
-        btn_fan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String url_rl = url+"fan";
-                SelectTask task = new SelectTask(url_rl);
-                task.execute();
-                updateStatus();
-            }
-        });
+//        btn_rl = findViewById(R.id.room);
+//        btn_mr = findViewById(R.id.mirror);
+//        btn_bed = findViewById(R.id.bed);
+//        btn_fan = findViewById(R.id.fan);
+//
+//        btn_rl.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String url_rl = url+"room_light";
+//                SelectTask task = new SelectTask(url_rl);
+//                task.execute();
+//                updateStatus();
+//            }
+//        });
+//
+//        btn_mr.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String url_rl = url+"mirror_light";
+//                SelectTask task = new SelectTask(url_rl);
+//                task.execute();
+//                updateStatus();
+//            }
+//        });
+//        btn_bed.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String url_rl = url+"bed_light";
+//                SelectTask task = new SelectTask(url_rl);
+//                task.execute();
+//                updateStatus();
+//            }
+//        });
+//        btn_fan.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String url_rl = url+"fan";
+//                SelectTask task = new SelectTask(url_rl);
+//                task.execute();
+//                updateStatus();
+//            }
+//        });
 
     }
 
@@ -139,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
                     Fragment selectedFragment = null;
 
                     switch (item.getItemId()) {
+
                         case R.id.nav_home:
                             selectedFragment = new Frag1();
                             break;
@@ -198,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
 
     }
 
-    private void updateStatus(){
+    public void updateStatus(){
         String url_rl = url+"status";
         StatusTask task = new StatusTask(url_rl, this);
         task.execute();
@@ -215,11 +224,11 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
         try {
             JSONObject json = new JSONObject(jsonStrings);
             temp = json.getString("temp");
-            String humi = json.getString("hum");
+            hum = json.getString("hum");
             String far = json.getString("far");
 
             if(!temp.isEmpty()){
-                head_txt.setText(String.format("%s/%s/%s", temp, humi,far));
+                head_txt.setText(String.format("%s/%s/%s", temp, hum,far));
             }
 
         }catch (JSONException e){
@@ -231,41 +240,37 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
     //Function for updating Button Status
 
 
-    @Override
-    public void onInputASent(CharSequence input) {
-        fragmentA.updateEditText(input);
-    }
+
 
     private void updateButtonStatus(String jsonStrings){
         try {
             JSONObject json = new JSONObject(jsonStrings);
 
-            String room_light = json.getString("rl");
-            String mirror_light = json.getString("ml");
-            String bed_light = json.getString("bl");
-            String fan = json.getString("fan");
+             room_light = json.getString("rl");
+             mirror_light = json.getString("ml");
+             bed_light = json.getString("bl");
+             fan = json.getString("fan");
 
-
-            if(room_light.equals("1")){
-                btn_rl.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
-            }else{
-                btn_rl.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
-            }
-            if(mirror_light.equals("1")){
-                btn_mr.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
-            }else{
-                btn_mr.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
-            }
-            if(bed_light.equals("1")){
-                btn_bed.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
-            }else{
-                btn_bed.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
-            }
-            if(fan.equals("1")){
-                btn_fan.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
-            }else{
-                btn_fan.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
-            }
+//            if(room_light.equals("1")){
+//                btn_rl.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
+//            }else{
+//                btn_rl.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
+//            }
+//            if(mirror_light.equals("1")){
+//                btn_mr.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
+//            }else{
+//                btn_mr.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
+//            }
+//            if(bed_light.equals("1")){
+//                btn_bed.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
+//            }else{
+//                btn_bed.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
+//            }
+//            if(fan.equals("1")){
+//                btn_fan.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
+//            }else{
+//                btn_fan.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
+//            }
             /*if(!temp.isEmpty()){
                 btn_stat.setText(temp);
             }*/
@@ -276,4 +281,8 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
 
     }
 
+    @Override
+    public void onInputASent(CharSequence input) {
+
+    }
 }

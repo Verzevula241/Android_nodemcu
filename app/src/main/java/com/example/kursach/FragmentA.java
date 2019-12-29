@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 public class FragmentA extends Fragment {
     private FragmentAListener listener;
     private TextView editText;
+    private TextView editText1;
 
     public interface FragmentAListener {
         void onInputASent(CharSequence input);
@@ -26,12 +27,15 @@ public class FragmentA extends Fragment {
         View v = inflater.inflate(R.layout.frag2_layout, container, false);
 
         editText = v.findViewById(R.id.temp1);
+        editText1 = v.findViewById(R.id.hum);
         editText.setText(MainActivity.temp);
+        editText1.setText(MainActivity.hum);
         return v;
     }
 
-    public void updateEditText(CharSequence newText) {
-        editText.setText(newText);
+    public void updateEditText(CharSequence temp,CharSequence hum) {
+        editText.setText(temp);
+        editText1.setText(hum);
     }
 
     @Override
@@ -48,7 +52,7 @@ public class FragmentA extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-               updateEditText(MainActivity.temp);
+                updateEditText(MainActivity.temp,MainActivity.hum);
                 handler.postDelayed(this, 2000);
             }
         }, 1000);  //the time is in miliseconds
