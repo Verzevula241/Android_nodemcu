@@ -16,6 +16,9 @@ public class FragmentA extends Fragment {
     private FragmentAListener listener;
     private TextView editText;
     private TextView editText1;
+    private  TextView min;
+    private  TextView max;
+    public MainActivity main = new MainActivity();
 
     public interface FragmentAListener {
         void onInputASent(CharSequence input);
@@ -28,14 +31,18 @@ public class FragmentA extends Fragment {
 
         editText = v.findViewById(R.id.temp1);
         editText1 = v.findViewById(R.id.hum);
-        editText.setText(MainActivity.temp);
-        editText1.setText(MainActivity.hum);
+        min = v.findViewById(R.id.min);
+        max = v.findViewById(R.id.max);
+        min.setText("Min ");
+        max.setText("Max ");
+        editText.setText(String.format("%s °C",MainActivity.temp));
+        editText1.setText(MainActivity.hum+" %");
         return v;
     }
 
     public void updateEditText(CharSequence temp,CharSequence hum) {
-        editText.setText(temp);
-        editText1.setText(hum);
+        editText.setText(String.format("%s °C",temp));
+        editText1.setText(hum+" %");
     }
 
     @Override
@@ -53,11 +60,33 @@ public class FragmentA extends Fragment {
             @Override
             public void run() {
                 updateEditText(MainActivity.temp,MainActivity.hum);
+                if(MainActivity.temp_list.size()!=0) {
+                    min.setText("Min "+min(Integer.valueOf(MainActivity.temp)));
+                    max.setText("Max "+max(Integer.valueOf(MainActivity.temp)));
+                }
                 handler.postDelayed(this, 2000);
             }
         }, 1000);  //the time is in miliseconds
     }
 
+    public String min(int min){
+        int minValue = min;
+        for (int i = 0; i < MainActivity.temp_list.size(); i++) {
+            if (MainActivity.temp_list.get(i) < minValue) {
+                minValue = MainActivity.temp_list.get(i);
+            }
+        }
+        return String.valueOf(minValue);
+    }
+    public String max(int max){
+        int maxValue = max;
+        for (int i = 0; i < MainActivity.temp_list.size(); i++) {
+            if (MainActivity.temp_list.get(i) > maxValue) {
+                maxValue = MainActivity.temp_list.get(i);
+            }
+        }
+        return String.valueOf(maxValue);
+    }
     @Override
     public void onDetach() {
         super.onDetach();

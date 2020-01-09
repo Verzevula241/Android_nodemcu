@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -9,108 +10,67 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
 
     <ImageView
         android:id="@+id/bg_status"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/background"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp" />
+        android:contentDescription="Pic"
+        android:src="@drawable/background_on"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp" />
 
-
-    <TextView
-        android:id="@+id/head_txt"
-        android:layout_width="match_parent"
-        android:layout_height="45dp" />
-
-<!--    <LinearLayout-->
-<!--        android:orientation="vertical"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_centerVertical="true"-->
-<!--        android:layout_centerHorizontal="true">-->
-
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_centerHorizontal="true">-->
-
-<!--            <Button-->
-<!--                android:id="@+id/room"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:drawableBottom="@drawable/power_off"-->
-<!--                android:background="@drawable/button_rec"-->
-<!--                android:text="Room Light"-->
-<!--                android:textSize="16sp"-->
-<!--                android:layout_margin="5dp"-->
-<!--                android:padding="10dp" />-->
-<!--            <Button-->
-<!--                android:id="@+id/mirror"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:drawableBottom="@drawable/power_off"-->
-<!--                android:background="@drawable/button_rec"-->
-<!--                android:text="Mirror Light"-->
-<!--                android:textSize="16sp"-->
-<!--                android:layout_margin="5dp"-->
-<!--                android:padding="10dp" />-->
-<!--        </LinearLayout>-->
-<!--        <LinearLayout-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_centerHorizontal="true">-->
-<!--            <Button-->
-<!--                android:id="@+id/bed"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:drawableBottom="@drawable/power_off"-->
-<!--                android:background="@drawable/button_rec"-->
-<!--                android:text="Bed Light"-->
-<!--                android:textSize="16sp"-->
-<!--                android:layout_margin="5dp"-->
-<!--                android:padding="10dp" />-->
-<!--            <Button-->
-<!--                android:id="@+id/fan"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:drawableBottom="@drawable/power_off"-->
-<!--                android:background="@drawable/button_rec"-->
-<!--                android:text="Table Fan"-->
-<!--                android:textSize="16sp"-->
-<!--                android:layout_margin="5dp"-->
-<!--                android:padding="10dp" />-->
-<!--        </LinearLayout>-->
-
-<!--    </LinearLayout>-->
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"/>
+        android:layout_above="@id/bottom_navigation" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/head_txt"
+                android:layout_width="100dp"
+                android:layout_height="29dp"
+                android:gravity="center"
+                android:text="@string/server"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.44"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.024" />
+
+            <ImageView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.593"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.039"
+                app:srcCompat="@drawable/server_off" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_navigation"
-        android:background="?android:attr/windowBackground" />
+        android:layout_marginBottom="0dp"
+        android:background="?android:attr/windowBackground"
+        app:menu="@menu/bottom_navigation" >
 
-
-    <TextView
-        android:id="@+id/txt_network"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp" />
-
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
 </RelativeLayout>

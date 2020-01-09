@@ -2,4 +2,5 @@
     <string name="app_name">Kursach</string>
     <string name="server_offline">Нет подключения к серверу</string>
     <string name="ip">192.168.0.3</string>
+    <string name="server">Сервер</string>
 </resources>

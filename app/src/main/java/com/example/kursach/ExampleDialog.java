@@ -15,13 +15,14 @@ public class ExampleDialog extends AppCompatDialogFragment {
     private EditText editTextUsername;
     private ExampleDialogListener listener;
 
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_dialog, null);
-
+        final MainActivity main = new MainActivity();
         builder.setView(view)
                 .setTitle("ip address")
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {

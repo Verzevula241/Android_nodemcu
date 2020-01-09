@@ -19,6 +19,7 @@ public class StatusTask extends AsyncTask<Void, Void, String> {
     @Override
     protected String doInBackground(Void... params) {
         String jsonString = JsonHttp.makeHttpRequest(mUrl);
+
         return jsonString;
     }
 

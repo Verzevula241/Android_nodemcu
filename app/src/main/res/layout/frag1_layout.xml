@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_on"
+    android:background="#1A000000"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,33 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:background="@drawable/button_rec"
-                    android:drawableBottom="@drawable/power_off"
-                    android:padding="10dp"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true">
-
-                <Button
-                    android:id="@+id/bed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/button_rec"
-                    android:drawableBottom="@drawable/power_off"
-                    android:padding="10dp"
-                    android:textSize="16sp" />
-
-                <Button
-                    android:id="@+id/fan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/button_rec"
-                    android:drawableBottom="@drawable/power_off"
+                    android:drawableBottom="@drawable/key"
                     android:padding="10dp"
                     android:textSize="16sp" />
             </LinearLayout>

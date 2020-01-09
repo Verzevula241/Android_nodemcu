@@ -20,14 +20,22 @@ import androidx.fragment.app.Fragment;
 public class Frag3 extends Fragment {
 
     Switch sw;
+    Switch Lay;
     EditText porog;
+
+    Bundle savedState=new Bundle();
+    private MainActivity main = new MainActivity();
+    Boolean state;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag3_layout, container, false);
         sw = v.findViewById(R.id.switch1);
+        Lay = v.findViewById(R.id.switch2);
         porog = v.findViewById(R.id.porog);
+        state = main.stateLay;
+        Lay.setChecked(state);
 
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -49,13 +57,29 @@ public class Frag3 extends Fragment {
 
         });
 
+        Lay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ((MainActivity)getActivity()).back();
+                    main.stateLay = true;
+
+                }
+                else{
+                    ((MainActivity)getActivity()).back_org();
+                    main.stateLay = false;
+                }
+            }
+        });
+
         return v;
 
     }
 
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
+        state = main.stateLay;
     }
 }

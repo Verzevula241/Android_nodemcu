@@ -25,6 +25,7 @@ public class Frag1 extends Fragment {
 
     private String url = main.url;
     String room_light ;
+    String lock;
 
 
     @Nullable
@@ -45,8 +46,9 @@ public class Frag1 extends Fragment {
         btn_mr =  v.findViewById(R.id.mirror);
         btn_mr.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Task task = new Task();
-                task.execute("245");
+                String url_rl = url+"lock";
+                SelectTask task = new SelectTask(url_rl);
+                task.execute();
             }
         });
 
@@ -61,6 +63,7 @@ public class Frag1 extends Fragment {
             @Override
             public void run() {
                 room_light = MainActivity.room_light;
+                lock = MainActivity.lock;
                 updateButtonStatus();
                 handler.postDelayed(this, 200);
             }
@@ -77,11 +80,11 @@ public class Frag1 extends Fragment {
             }else{
                 btn_rl.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
                }
-//            if(mirror_light.equals("1")){
-//                btn_mr.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
-//            }else{
-//                btn_mr.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
-//            }
+            if(lock.equals("1")){
+                btn_mr.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.key_on);
+            }else{
+                btn_mr.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.key);
+            }
 //            if(bed_light.equals("1")){
 //                btn_bed.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
 //            }else{

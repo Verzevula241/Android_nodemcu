@@ -13,7 +13,6 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,25 +23,31 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.LinkedList;
+
 public class MainActivity extends AppCompatActivity implements OnDataSendToActivity,ExampleDialog.ExampleDialogListener, FragmentA.FragmentAListener {
 
 
-
+    static LinkedList<Integer> temp_list = new LinkedList<>();
     ImageView bg_state;
+    ImageView status;
     Button btn_rl, btn_mr, btn_bed, btn_fan;
     static public String room_light = "0";
-    public String mirror_light;
+    static public String lock = "0";
     public String bed_light;
     public String fan;
     TextView txt_network;
     TextView head_txt;
-    static String ip = "192.168.43.232";
+    static String ip = "192.168.1.66";
     static String mess = "";
     //String url = "http://"+ip+"/"; //Define your NodeMCU IP Address here Ex: http://192.168.1.4/
     static String url ;
     Toast toast ;
     static String temp;
     static String hum;
+    String net = "1";
+    int i = 0;
+    static  boolean  stateLay = false;
 
     private FragmentA fragmentA;
     private Frag1 frag1;
@@ -60,9 +65,8 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        status = findViewById(R.id.status);
         bg_state = findViewById(R.id.bg_status);
-        txt_network = findViewById(R.id.txt_network);
         head_txt = findViewById(R.id.head_txt);
 
 
@@ -78,65 +82,38 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                url = String.format("http://%s/",ip);
                 if(isNetworkAvailable()){
-                    bg_state.setImageResource(R.drawable.background_on);
-                    url = String.format("http://%s/",ip);
+                    //bg_state.setImageResource(R.drawable.background_on);
+                    set_network();
+                    if(net.equals("0")) {
+                        status.setImageResource(R.drawable.server_on);
+                        updateTemp();
+                        updateStatus();
+                        net ="1";
+                    }else{
+                        status.setImageResource(R.drawable.server_off);
+                    }
+
 
                 }else{
-                    bg_state.setImageResource(R.drawable.background);
-                    //txt_network.setText(getString(R.string.server_offline));
+
                     showAToast(getString(R.string.server_offline));
                 }
-                updateTemp();
-                updateStatus();
-                handler.postDelayed(this, 5000);
+
+
+                handler.postDelayed(this, 1000);
             }
-        }, 5000);  //the time is in miliseconds
+        }, 1000);//the time is in miliseconds
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new Frag1()).commit();
 
-
-//        btn_rl = findViewById(R.id.room);
-//        btn_mr = findViewById(R.id.mirror);
-//        btn_bed = findViewById(R.id.bed);
-//        btn_fan = findViewById(R.id.fan);
-//
-//        btn_rl.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String url_rl = url+"room_light";
-//                SelectTask task = new SelectTask(url_rl);
-//                task.execute();
-//                updateStatus();
-//            }
-//        });
-//
-//        btn_mr.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String url_rl = url+"mirror_light";
-//                SelectTask task = new SelectTask(url_rl);
-//                task.execute();
-//                updateStatus();
-//            }
-//        });
-//        btn_bed.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String url_rl = url+"bed_light";
-//                SelectTask task = new SelectTask(url_rl);
-//                task.execute();
-//                updateStatus();
-//            }
-//        });
-//        btn_fan.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String url_rl = url+"fan";
-//                SelectTask task = new SelectTask(url_rl);
-//                task.execute();
-//                updateStatus();
-//            }
-//        });
-
+    }
+    public void back(){
+        bg_state.setImageResource(R.drawable.weather);
+    }
+    public void back_org(){
+        bg_state.setImageResource(R.drawable.background_on);
     }
 
 
@@ -145,11 +122,11 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     Fragment selectedFragment = null;
-
                     switch (item.getItemId()) {
 
                         case R.id.nav_home:
                             selectedFragment = new Frag1();
+
                             break;
                         case R.id.nav_favorites:
                             selectedFragment = new FragmentA();
@@ -174,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
     @Override
     public void applyTexts(String username) {
         ip = username;
+        url = String.format("http://%s/",ip);
     }
 
 
@@ -204,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
     public void sendData(String str) {
         updateButtonStatus(str);
         updateTempStatus(str);
+        updatenetwork(str);
 
     }
 
@@ -212,24 +191,41 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
         StatusTask task = new StatusTask(url_rl, this);
         task.execute();
     }
-    private void updateTemp(){
+    public void updateTemp(){
         String url_rl = url+"temp";
+        StatusTask task = new StatusTask(url_rl, this);
+        task.execute();
+    }
+    public void set_network(){
+        String url_rl = url+"network";
         StatusTask task = new StatusTask(url_rl, this);
         task.execute();
     }
 
 
+    private void updatenetwork(String jsonStrings){
+        try {
+            JSONObject json = new JSONObject(jsonStrings);
+            String nety = json.getString("net");
+
+            if(!nety.isEmpty()){
+                net = nety;
+            }
+            else showAToast("Нет подключения к серверу");
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+    }
     private void updateTempStatus(String jsonStrings){
 
         try {
             JSONObject json = new JSONObject(jsonStrings);
             temp = json.getString("temp");
+            temp_list.add(Integer.valueOf(temp));
             hum = json.getString("hum");
             String far = json.getString("far");
 
-            if(!temp.isEmpty()){
-                head_txt.setText(String.format("%s/%s/%s", temp, hum,far));
-            }
 
         }catch (JSONException e){
             e.printStackTrace();
@@ -247,33 +243,9 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
             JSONObject json = new JSONObject(jsonStrings);
 
              room_light = json.getString("rl");
-             mirror_light = json.getString("ml");
+             lock = json.getString("ml");
              bed_light = json.getString("bl");
              fan = json.getString("fan");
-
-//            if(room_light.equals("1")){
-//                btn_rl.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
-//            }else{
-//                btn_rl.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
-//            }
-//            if(mirror_light.equals("1")){
-//                btn_mr.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
-//            }else{
-//                btn_mr.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
-//            }
-//            if(bed_light.equals("1")){
-//                btn_bed.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
-//            }else{
-//                btn_bed.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
-//            }
-//            if(fan.equals("1")){
-//                btn_fan.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
-//            }else{
-//                btn_fan.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
-//            }
-            /*if(!temp.isEmpty()){
-                btn_stat.setText(temp);
-            }*/
 
         }catch (JSONException e){
             e.printStackTrace();

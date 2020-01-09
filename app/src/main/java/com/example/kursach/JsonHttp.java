@@ -16,8 +16,11 @@ public class JsonHttp {
         try{
             URL u = new URL(url);
             HttpURLConnection con = (HttpURLConnection) u.openConnection();
+            con.setConnectTimeout(2000);
             strResult = readStream(con.getInputStream());
-        }catch (Exception e){
+            if(strResult.isEmpty()) return strResult;
+        }catch (
+                Exception e){
             e.printStackTrace();
         }
 
