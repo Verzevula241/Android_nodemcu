@@ -28,30 +28,37 @@ import java.util.LinkedList;
 public class MainActivity extends AppCompatActivity implements OnDataSendToActivity,ExampleDialog.ExampleDialogListener, FragmentA.FragmentAListener {
 
 
+    /**лист для хранения температур*/
     static LinkedList<Integer> temp_list = new LinkedList<>();
     ImageView bg_state;
     ImageView status;
     Button btn_rl, btn_mr, btn_bed, btn_fan;
+    /**положение кнопки*/
     static public String room_light = "0";
+    /**положение кнопки*/
     static public String lock = "0";
-    public String bed_light;
-    public String fan;
     TextView txt_network;
     TextView head_txt;
+    /**ip адрес*/
     static String ip = "192.168.1.66";
+    /**сообщение*/
     static String mess = "";
-    //String url = "http://"+ip+"/"; //Define your NodeMCU IP Address here Ex: http://192.168.1.4/
+    /**URL*/
     static String url ;
     Toast toast ;
+    /**значение температуры*/
     static String temp;
+    /**значение влажности*/
     static String hum;
+    /**состояние платы*/
     String net = "1";
-    int i = 0;
-    static  boolean  stateLay = false;
 
     private FragmentA fragmentA;
     private Frag1 frag1;
 
+    /**метод отображения уведомления
+     * @param message - сообщение для отображения
+     * */
     public void showAToast (String message){
         if (toast != null) {
             toast.cancel();
@@ -60,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
         toast.show();
     }
 
+    /**
+     * Метод выполняемый при создании активити, внутри Runnable который проверяет подключение к сети и выполняет основные запросы к плате
+     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,14 +119,16 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
                 new Frag1()).commit();
 
     }
+    /**метод меняющий задний фон*/
     public void back(){
         bg_state.setImageResource(R.drawable.weather);
     }
+    /**метод меняющий задний фон*/
     public void back_org(){
         bg_state.setImageResource(R.drawable.background_on);
     }
 
-
+    /**Листнер привязаный к нижнему меню, реагирует на нажатия пунктов меню и позволяет перемещаться по фрагментам*/
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -142,12 +154,16 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
                 }
             };
 
-
+    /**открывает диалог ввода Ip*/
     public void openDialog() {
         ExampleDialog exampleDialog = new ExampleDialog();
         exampleDialog.show(getSupportFragmentManager(), "example dialog");
     }
 
+    /**
+     * применение переменной после ее передачи от openDialog
+     * @param username - текст принятый от openDialog
+     * */
     @Override
     public void applyTexts(String username) {
         ip = username;
@@ -155,13 +171,20 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
     }
 
 
+    /**
+     * метод срабатывает при создании меню
+     * @param menu - меню
+     * */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
-
+    /**
+     * метод срабатывает при нажатии пункта меню
+     * @param item - пункт меню
+     * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item2) {
@@ -170,7 +193,9 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
         }
         return super.onOptionsItemSelected(item);
     }
-
+    /**
+     * метод проверки доступа к интернету
+     * */
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -178,6 +203,10 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    /**
+     * метод передачи сообщения с сервера методам
+     * @param str - сообщение
+     * */
     @Override
     public void sendData(String str) {
         updateButtonStatus(str);
@@ -186,23 +215,35 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
 
     }
 
+    /**
+     * метод отправляет на сервер запрос
+     * */
     public void updateStatus(){
         String url_rl = url+"status";
         StatusTask task = new StatusTask(url_rl, this);
         task.execute();
     }
+    /**
+     * метод отправляет на сервер запрос
+     * */
     public void updateTemp(){
         String url_rl = url+"temp";
         StatusTask task = new StatusTask(url_rl, this);
         task.execute();
     }
+    /**
+     * метод отправляет на сервер запрос
+     * */
     public void set_network(){
         String url_rl = url+"network";
         StatusTask task = new StatusTask(url_rl, this);
         task.execute();
     }
 
-
+    /**
+     * метод обработки данных с сервера о его работе
+     * @param jsonStrings -сообщение с сервера
+     * */
     private void updatenetwork(String jsonStrings){
         try {
             JSONObject json = new JSONObject(jsonStrings);
@@ -217,6 +258,10 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
         }
 
     }
+    /**
+     * метод обработки данных с датчиков на плате
+     * @param jsonStrings -сообщение с сервера
+     * */
     private void updateTempStatus(String jsonStrings){
 
         try {
@@ -233,19 +278,16 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
 
     }
 
-    //Function for updating Button Status
-
-
-
-
+    /**
+     * метод обработки данных о состоянии кнопок на плате
+     * @param jsonStrings -сообщение с сервера
+     * */
     private void updateButtonStatus(String jsonStrings){
         try {
             JSONObject json = new JSONObject(jsonStrings);
 
              room_light = json.getString("rl");
              lock = json.getString("ml");
-             bed_light = json.getString("bl");
-             fan = json.getString("fan");
 
         }catch (JSONException e){
             e.printStackTrace();
