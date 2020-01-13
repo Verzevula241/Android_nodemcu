@@ -27,6 +27,10 @@ public class Frag3 extends Fragment {
     private MainActivity main = new MainActivity();
     Boolean state;
 
+
+    /**
+     * Метод срабатывает при создании вида автоматически,подгружает XML файл для отображения и инициализирует элементы управления
+     * */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

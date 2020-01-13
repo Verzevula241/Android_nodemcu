@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.857"
+            app:layout_constraintHorizontal_bias="0.841"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,15 +37,15 @@
 
         <Switch
             android:id="@+id/switch2"
-            android:layout_width="223dp"
-            android:layout_height="33dp"
-            android:text="Сменить лай аут"
+            android:layout_width="274dp"
+            android:layout_height="38dp"
+            android:text="Темная тема"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.718"
+            app:layout_constraintHorizontal_bias="0.566"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.581" />
+            app:layout_constraintVertical_bias="0.587" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

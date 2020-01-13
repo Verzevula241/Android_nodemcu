@@ -13,7 +13,6 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,14 +24,17 @@ import org.json.JSONObject;
 
 import java.util.LinkedList;
 
-public class MainActivity extends AppCompatActivity implements OnDataSendToActivity,ExampleDialog.ExampleDialogListener, FragmentA.FragmentAListener {
+
+/**
+ * Класс для работы с Activity , основной класс через который проходит вся программа и работа с платой
+ * */
+public class MainActivity extends AppCompatActivity implements OnDataSendToActivity,ExampleDialog.ExampleDialogListener, Frag2.FragmentAListener {
 
 
     /**лист для хранения температур*/
     static LinkedList<Integer> temp_list = new LinkedList<>();
     ImageView bg_state;
     ImageView status;
-    Button btn_rl, btn_mr, btn_bed, btn_fan;
     /**положение кнопки*/
     static public String room_light = "0";
     /**положение кнопки*/
@@ -52,8 +54,10 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
     static String hum;
     /**состояние платы*/
     String net = "1";
+    /**состояние свитча*/
+    static  boolean  stateLay = false;
 
-    private FragmentA fragmentA;
+    private Frag2 frag2;
     private Frag1 frag1;
 
     /**метод отображения уведомления
@@ -141,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements OnDataSendToActiv
 
                             break;
                         case R.id.nav_favorites:
-                            selectedFragment = new FragmentA();
+                            selectedFragment = new Frag2();
                             break;
                         case R.id.nav_search:
                             selectedFragment = new Frag3();

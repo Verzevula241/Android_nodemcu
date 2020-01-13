@@ -10,12 +10,15 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
-
+/**
+ * Класс для работы с диалоговым окном
+ * */
 public class ExampleDialog extends AppCompatDialogFragment {
     private EditText editTextUsername;
     private ExampleDialogListener listener;
 
 
+    /**метод срабатывающий при создании диалоговвго окна*/
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -44,6 +47,10 @@ public class ExampleDialog extends AppCompatDialogFragment {
         return builder.create();
     }
 
+    /**
+     * метод срабатывает при обращении к окну
+     * @param context - контекст
+     * */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -55,7 +62,9 @@ public class ExampleDialog extends AppCompatDialogFragment {
                     "must implement ExampleDialogListener");
         }
     }
-
+    /**
+     * интерфейс для передачи данных на основную Activity
+     * */
     public interface ExampleDialogListener {
         void applyTexts(String username);
     }

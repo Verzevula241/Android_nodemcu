@@ -15,19 +15,24 @@ import androidx.fragment.app.Fragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
+/**
+ * Класс для работы с  фрагментом, в нем отображениа работа кнопок и обращение к основной Activity
+ * */
 public class Frag1 extends Fragment {
 
-    Button btn_rl,btn_mr,btn_bed,btn_fan;
+    Button btn_rl,btn_mr;
 
 
     private MainActivity main;
-
     private String url = main.url;
+    /**положение кнопки*/
     String room_light ;
+    /**положение кнопки*/
     String lock;
 
-
+    /**
+     * Метод срабатывает при создании вида автоматически,подгружает XML файл для отображения и инициализирует элементы управления
+     * */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,6 +60,10 @@ public class Frag1 extends Fragment {
          return v;
     }
 
+    /**
+     * метод срабатывает при работе фрагмента
+     * @param context - контекст
+     * */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -72,7 +81,9 @@ public class Frag1 extends Fragment {
 
 
 
-
+    /**
+     * метод обновления кнопок
+     * */
     protected void updateButtonStatus(){
 
             if(room_light.equals("1")){
@@ -85,23 +96,6 @@ public class Frag1 extends Fragment {
             }else{
                 btn_mr.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.key);
             }
-//            if(bed_light.equals("1")){
-//                btn_bed.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
-//            }else{
-//                btn_bed.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
-//            }
-//            if(fan.equals("1")){
-//                btn_fan.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_on);
-//            }else{
-//                btn_fan.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.power_off);
-//            }
-            /*if(!temp.isEmpty()){
-                btn_stat.setText(temp);
-            }*/
-
-//        }catch (JSONException e){
-//            e.printStackTrace();
-//        }
 
     }
 

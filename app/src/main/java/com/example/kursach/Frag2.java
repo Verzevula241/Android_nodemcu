@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
-public class FragmentA extends Fragment {
+public class Frag2 extends Fragment {
     private FragmentAListener listener;
     private TextView editText;
     private TextView editText1;
@@ -24,6 +24,9 @@ public class FragmentA extends Fragment {
         void onInputASent(CharSequence input);
     }
 
+    /**
+     * Метод срабатывает при создании вида автоматически,подгружает XML файл для отображения температуры и влажности
+     * */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,11 +43,21 @@ public class FragmentA extends Fragment {
         return v;
     }
 
+    /**
+     * Метод для обновления EditText
+     * @param temp - значение температуры
+     * @param hum - значение влажности
+     * */
     public void updateEditText(CharSequence temp,CharSequence hum) {
         editText.setText(String.format("%s °C",temp));
         editText1.setText(hum+" %");
     }
 
+
+    /**
+     * метод срабатывает при работе фрагмента
+     * @param context - контекст
+     * */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -69,6 +82,10 @@ public class FragmentA extends Fragment {
         }, 1000);  //the time is in miliseconds
     }
 
+    /**
+     * метод для нахождения минимального значения
+     * @param min - значение для сравнения
+     * */
     public String min(int min){
         int minValue = min;
         for (int i = 0; i < MainActivity.temp_list.size(); i++) {
@@ -78,6 +95,10 @@ public class FragmentA extends Fragment {
         }
         return String.valueOf(minValue);
     }
+    /**
+     * метод для нахождения максимального значения
+     * @param max - значение для сравнения
+     * */
     public String max(int max){
         int maxValue = max;
         for (int i = 0; i < MainActivity.temp_list.size(); i++) {

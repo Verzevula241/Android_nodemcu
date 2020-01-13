@@ -7,9 +7,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-
+/**
+ * класс отвечающий за обращение к серверу
+ * */
 public class JsonHttp {
 
+    /**
+     * метод создания запроса
+     * @param url - url адрес для обращения к серверу
+     * */
     public static String makeHttpRequest(String url){
         String strResult = "";
 
@@ -26,7 +32,10 @@ public class JsonHttp {
 
         return strResult;
     }
-
+    /**
+     * метод чтения из потока
+     * @param in - поток для чтения
+     * */
     private static String readStream(InputStream in) {
         BufferedReader reader = null;
         StringBuilder sb = new StringBuilder();

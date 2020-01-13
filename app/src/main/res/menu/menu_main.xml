@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/item2"
-        android:title="Смена IP"
+        android:title="@string/ref_ip"
         app:showAsAction="never" />
 
 </menu>

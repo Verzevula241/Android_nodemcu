@@ -21,12 +21,17 @@ import java.util.HashMap;
 public class SelectTask extends AsyncTask<Void, Void, String> {
 
     private String mUrl;
-
+    /**
+     * метод создания запроса
+     * @param url - url адрес для обращения к серверу
+     * */
     public SelectTask(String url){
         super();
         mUrl = url;
     }
-
+    /**
+     * метод выполняемый на "заднем плане"
+     * */
     @Override
     protected String doInBackground(Void... params) {
        return JsonHttp.makeHttpRequest(mUrl);

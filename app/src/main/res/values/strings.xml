@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Kursach</string>
+    <string name="app_name">Home</string>
     <string name="server_offline">Нет подключения к серверу</string>
     <string name="ip">192.168.0.3</string>
     <string name="server">Сервер</string>
+    <string name="ref_ip">Смена IP</string>
 </resources>
